@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "frontend": "next dev",
-    "backend": "cd backend && venv\\Scripts\\activate && uvicorn main:app --reload --port 8080",
+    "backend": "cd _backend && venv\\Scripts\\activate && uvicorn main:app --reload --port 8080",
     "dev": "concurrently -c \"cyan,magenta\" -n \"FRONTEND,BACKEND\" \"npm run frontend\" \"npm run backend\"",
     "build": "next build",
     "start": "next start",
