@@ -5,7 +5,7 @@ export async function POST(request: Request) {
   try {
     const data = await request.json();
 
-    await prismaClient.$transaction(async (tx) => {
+    await prismaClient.$transaction(async (tx: any) => {
       // 1. Delete all existing data
       await tx.transactionItem.deleteMany();
       await tx.transaction.deleteMany();

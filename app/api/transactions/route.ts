@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     };
 
     // Use Prisma transaction to ensure atomicity
-    const result = await prismaClient.$transaction(async (tx) => {
+    const result = await prismaClient.$transaction(async (tx: any) => {
       // 1. Create Transaction
       const createdTx = await tx.transaction.create({
         data: transactionData,

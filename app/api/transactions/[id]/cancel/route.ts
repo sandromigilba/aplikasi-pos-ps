@@ -6,7 +6,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   try {
     const { reason } = await request.json();
 
-    const result = await prismaClient.$transaction(async (tx) => {
+    const result = await prismaClient.$transaction(async (tx: any) => {
       const transaction = await tx.transaction.findUnique({
         where: { id },
         include: { items: true },
