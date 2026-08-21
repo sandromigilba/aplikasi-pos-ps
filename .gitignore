@@ -19,6 +19,8 @@
 
 # production
 /build
+dist
+dist-ssr
 
 # misc
 .DS_Store
@@ -32,6 +34,12 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+.env
+.venv
+env/
+venv/
+ENV/
+backend/venv/
 
 # vercel
 .vercel
@@ -39,3 +47,38 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Python
+__pycache__/
+*.py[cod]
+*.class
+*.so
+.Python
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Database
+*.sqlite3
+*.db
+backend/pos.db
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
