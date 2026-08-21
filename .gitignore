@@ -16,11 +16,12 @@
 # next.js
 /.next/
 /out/
+next-env.d.ts
 
 # production
 /build
-dist
-dist-ssr
+/dist
+/dist-ssr
 
 # misc
 .DS_Store
@@ -32,46 +33,25 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# env files (NEVER commit these!)
 .env
-.venv
-env/
-venv/
-ENV/
-backend/venv/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
 
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
 
-# Python
-__pycache__/
-*.py[cod]
-*.class
-*.so
-.Python
-develop-eggs/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Database
+# database
 *.sqlite3
 *.db
-backend/pos.db
+*.db-journal
+pos.db
 
 # Editor directories and files
 .vscode/*
@@ -82,4 +62,3 @@ backend/pos.db
 *.njsproj
 *.sln
 *.sw?
-/app/generated/prisma
