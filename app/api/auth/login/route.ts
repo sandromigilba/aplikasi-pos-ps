@@ -71,11 +71,11 @@ export async function POST(request: Request) {
       // Fallback to default if DB is completely unreachable
       if (request.headers.get('content-type')?.includes('json')) {
         return NextResponse.json({ 
-          error: `Database Error: ${errorMsg.slice(0, 100)}... Pastikan URL Database benar dan sudah 'prisma db push'` 
+          error: `Database Error: ${errorMsg.slice(0, 500)}... Pastikan URL Database benar dan sudah 'prisma db push'` 
         }, { status: 500 });
       }
     }
 
-    return NextResponse.json({ error: `Terjadi kesalahan internal: ${errorMsg.slice(0, 50)}` }, { status: 500 });
+    return NextResponse.json({ error: `Terjadi kesalahan internal: ${errorMsg.slice(0, 500)}` }, { status: 500 });
   }
 }
