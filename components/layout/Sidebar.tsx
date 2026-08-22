@@ -7,11 +7,11 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   const menu = [
-    { href: '/views/cashier', icon: ShoppingCart, label: 'Kasir Utama' },
-    { href: '/views/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-    { href: '/views/products', icon: Package, label: 'Produk & Stok' },
-    { href: '/views/history', icon: History, label: 'Riwayat Transaksi' },
-    { href: '/views/settings', icon: Settings, label: 'Pengaturan' },
+    { href: '/cashier', icon: ShoppingCart, label: 'Kasir Utama' },
+    { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+    { href: '/products', icon: Package, label: 'Produk & Stok' },
+    { href: '/history', icon: History, label: 'Riwayat Transaksi' },
+    { href: '/settings', icon: Settings, label: 'Pengaturan' },
   ];
 
   return (
@@ -33,7 +33,7 @@ export default function Sidebar() {
 
       <nav className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
         {menu.map(item => {
-          const isActive = pathname === item.href || (pathname === '/' && item.href === '/views/cashier');
+          const isActive = pathname === item.href || (pathname === '/' && item.href === '/cashier');
           const Icon = item.icon;
           return (
             <Link

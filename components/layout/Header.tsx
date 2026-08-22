@@ -2,11 +2,11 @@
 import { usePathname } from 'next/navigation';
 
 const PAGE_TITLES: Record<string, string> = {
-  '/views/cashier':    'Point of Sale',
-  '/views/dashboard':  'Dashboard Analytics',
-  '/views/products':   'Manajemen Produk',
-  '/views/history':    'Riwayat Transaksi',
-  '/views/settings':   'Pengaturan Toko',
+  '/cashier':    'Point of Sale',
+  '/dashboard':  'Dashboard Analytics',
+  '/products':   'Manajemen Produk',
+  '/history':    'Riwayat Transaksi',
+  '/settings':   'Pengaturan Toko',
 };
 
 interface HeaderProps {
@@ -15,7 +15,7 @@ interface HeaderProps {
 
 export default function Header({ shopName }: HeaderProps) {
   const pathname = usePathname();
-  const title = PAGE_TITLES[pathname] || PAGE_TITLES['/views/cashier'];
+  const title = PAGE_TITLES[pathname] || PAGE_TITLES['/cashier'];
   const now = new Date();
   const dateStr = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
