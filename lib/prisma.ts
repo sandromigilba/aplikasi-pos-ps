@@ -1,8 +1,28 @@
 import { PrismaClient } from '@prisma/client'
-
+import { PrismaMariaDb } from '@prisma/adapter-mariadb'
 
 const prismaClientSingleton = () => {
-  return new PrismaClient()
+  let adapter;
+  
+  if (process.env.DATABASE_URL) {
+    // Parse connection string
+    const url = new URL(process.env.DATABASE_URL);
+    const pool = require('mariadb').createPool({
+      host: url.hostname,
+      port: Number(url.port) || 3306,
+      user: url.username,
+      password: url.password,
+      database: url.pathname.slice(1),
+      ssl: process.env.DATABASE_URL.includes('sslaccept=strict') ? { rejectUnauthorized: false } : true,
+      connectionLimit: 10,
+      connectTimeout: 30000 // 30 seconds for TiDB serverless wake-up
+    });
+    adapter = new PrismaMariaDb(pool);
+  } else {
+    throw new Error("DATABASE_URL is not set");
+  }
+
+  return new PrismaClient({ adapter })
 }
 
 declare global {
