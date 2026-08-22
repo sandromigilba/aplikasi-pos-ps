@@ -16,8 +16,9 @@ export async function GET(request: Request) {
     });
     return NextResponse.json(products);
   } catch (error: any) {
-    console.error("Products error:", error);
-    return NextResponse.json({ error: error.message || 'Failed to fetch products' }, { status: 500 });
+    const hasDbUrl = !!process.env.DATABASE_URL;
+    console.error(`Products error (DB URL Set: ${hasDbUrl}):`, error);
+    return NextResponse.json({ error: error.message || 'Failed to fetch products', hasDbUrl }, { status: 500 });
   }
 }
 

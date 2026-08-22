@@ -17,7 +17,9 @@ const prismaClientSingleton = () => {
     });
   } else {
     // Fallback if somehow missing
-    adapter = new PrismaMariaDb({ host: 'localhost' });
+    console.error("CRITICAL ERROR: DATABASE_URL is not set!");
+    // We shouldn't fallback to localhost on Vercel, it just confusingly fails later
+    throw new Error("DATABASE_URL environment variable is missing. Please add it to Vercel Environment Variables.");
   }
 
   return new PrismaClient({ adapter })
