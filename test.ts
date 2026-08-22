@@ -1,14 +1,13 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import 'dotenv/config';
+import prisma from './lib/prisma';
 
 async function main() {
-  console.log('Connecting...');
   try {
+    console.log('Testing prisma connection...');
     const settings = await prisma.setting.findMany();
     console.log('Settings:', settings);
-  } catch (e) {
-    console.error('Failed:', e);
+  } catch (err) {
+    console.error('Failed:', err);
   } finally {
     await prisma.$disconnect();
   }
