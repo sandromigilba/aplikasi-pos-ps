@@ -1,5 +1,6 @@
-import DashboardStats from '../components/dashboard/DashboardStats';
-import TransactionHistory from '../components/dashboard/TransactionHistory';
+'use client';
+import DashboardStats from '@/components/dashboard/DashboardStats';
+import TransactionHistory from '@/components/dashboard/TransactionHistory';
 
 export default function DashboardPage() {
 

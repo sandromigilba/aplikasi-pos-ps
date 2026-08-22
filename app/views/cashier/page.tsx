@@ -1,9 +1,10 @@
+'use client';
 import { useState, useCallback } from 'react';
-import { useStore } from '../store/useStore';
-import ProductCatalog from '../components/cashier/ProductCatalog';
-import Cart from '../components/cashier/Cart';
-import PaymentModal from '../components/cashier/PaymentModal';
-import type { CartItem } from '../types';
+import { useStore } from '@/store/useStore';
+import ProductCatalog from '@/components/cashier/ProductCatalog';
+import Cart from '@/components/cashier/Cart';
+import PaymentModal from '@/components/cashier/PaymentModal';
+import type { CartItem } from '@/types';
 
 export default function CashierPage() {
   const { products } = useStore();

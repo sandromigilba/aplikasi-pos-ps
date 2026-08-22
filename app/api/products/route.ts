@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma'; // Using alias, but wait, do we have @ configured? Let's use relative path.
 

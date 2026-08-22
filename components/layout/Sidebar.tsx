@@ -1,24 +1,22 @@
+'use client';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { LayoutDashboard, ShoppingCart, Package, History, Settings } from 'lucide-react';
 
-export type Page = 'dashboard' | 'cashier' | 'products' | 'history' | 'settings';
+export default function Sidebar() {
+  const pathname = usePathname();
 
-interface SidebarProps {
-  activePage: Page;
-  onNavigate: (page: Page) => void;
-}
-
-export default function Sidebar({ activePage, onNavigate }: SidebarProps) {
   const menu = [
-    { id: 'cashier', icon: ShoppingCart, label: 'Kasir Utama' },
-    { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-    { id: 'products', icon: Package, label: 'Produk & Stok' },
-    { id: 'history', icon: History, label: 'Riwayat Transaksi' },
-    { id: 'settings', icon: Settings, label: 'Pengaturan' },
-  ] as const;
+    { href: '/views/cashier', icon: ShoppingCart, label: 'Kasir Utama' },
+    { href: '/views/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+    { href: '/views/products', icon: Package, label: 'Produk & Stok' },
+    { href: '/views/history', icon: History, label: 'Riwayat Transaksi' },
+    { href: '/views/settings', icon: Settings, label: 'Pengaturan' },
+  ];
 
   return (
     <div
-      className="w-64 h-full flex flex-col fixed left-0 top-0"
+      className="w-64 h-full flex flex-col fixed left-0 top-0 z-10"
       style={{
         background: 'var(--bg-card)',
         borderRight: '1px solid var(--border)',
@@ -35,12 +33,12 @@ export default function Sidebar({ activePage, onNavigate }: SidebarProps) {
 
       <nav className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
         {menu.map(item => {
-          const isActive = activePage === item.id;
+          const isActive = pathname === item.href || (pathname === '/' && item.href === '/views/cashier');
           const Icon = item.icon;
           return (
-            <button
-              key={item.id}
-              onClick={() => onNavigate(item.id)}
+            <Link
+              key={item.href}
+              href={item.href}
               className="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all"
               style={{
                 background: isActive ? 'var(--accent-glow)' : 'transparent',
@@ -49,7 +47,7 @@ export default function Sidebar({ activePage, onNavigate }: SidebarProps) {
             >
               <Icon size={18} strokeWidth={isActive ? 2.5 : 2} />
               {item.label}
-            </button>
+            </Link>
           );
         })}
       </nav>

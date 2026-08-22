@@ -1,19 +1,21 @@
-import type { Page } from './Sidebar';
+'use client';
+import { usePathname } from 'next/navigation';
 
-const PAGE_TITLES: Record<Page, string> = {
-  cashier:    'Point of Sale',
-  dashboard:  'Dashboard Analytics',
-  products:   'Manajemen Produk',
-  history:    'Riwayat Transaksi',
-  settings:   'Pengaturan Toko',
+const PAGE_TITLES: Record<string, string> = {
+  '/views/cashier':    'Point of Sale',
+  '/views/dashboard':  'Dashboard Analytics',
+  '/views/products':   'Manajemen Produk',
+  '/views/history':    'Riwayat Transaksi',
+  '/views/settings':   'Pengaturan Toko',
 };
 
 interface HeaderProps {
-  page: Page;
   shopName: string;
 }
 
-export default function Header({ page, shopName }: HeaderProps) {
+export default function Header({ shopName }: HeaderProps) {
+  const pathname = usePathname();
+  const title = PAGE_TITLES[pathname] || PAGE_TITLES['/views/cashier'];
   const now = new Date();
   const dateStr = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
@@ -27,7 +29,7 @@ export default function Header({ page, shopName }: HeaderProps) {
     >
       <div>
         <h1 className="text-xl font-bold tracking-tight" style={{ color: 'var(--text-primary)' }}>
-          {PAGE_TITLES[page]}
+          {title}
         </h1>
         <p className="text-sm mt-0.5" style={{ color: 'var(--text-muted)' }}>{dateStr}</p>
       </div>

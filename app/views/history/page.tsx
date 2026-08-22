@@ -1,4 +1,5 @@
-import TransactionHistory from '../components/dashboard/TransactionHistory';
+'use client';
+import TransactionHistory from '@/components/dashboard/TransactionHistory';
 
 export default function HistoryPage() {
   return (
