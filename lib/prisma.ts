@@ -7,14 +7,16 @@ const prismaClientSingleton = () => {
   if (process.env.DATABASE_URL) {
     // Parse connection string
     const url = new URL(process.env.DATABASE_URL);
-    adapter = new PrismaMariaDb({
+    const pool = require('mariadb').createPool({
       host: url.hostname,
       port: Number(url.port) || 3306,
       user: url.username,
       password: url.password,
       database: url.pathname.slice(1),
-      ssl: process.env.DATABASE_URL.includes('sslaccept=strict') ? { rejectUnauthorized: false } : undefined
+      ssl: process.env.DATABASE_URL.includes('sslaccept=strict') ? { rejectUnauthorized: false } : undefined,
+      connectionLimit: 10
     });
+    adapter = new PrismaMariaDb(pool);
   } else {
     // Fallback if somehow missing
     console.error("CRITICAL ERROR: DATABASE_URL is not set!");
