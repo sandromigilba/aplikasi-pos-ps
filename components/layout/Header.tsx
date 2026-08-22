@@ -35,14 +35,6 @@ export default function Header({ shopName }: HeaderProps) {
       </div>
 
       <div className="flex items-center gap-6">
-        {/* Offline badge */}
-        <div
-          className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm"
-          style={{ background: 'var(--bg-surface)', color: 'var(--success)', border: '1px solid var(--border)' }}
-        >
-          <span className="w-2 h-2 rounded-full inline-block" style={{ background: 'var(--success)' }} />
-          Sistem Lokal Aktif
-        </div>
 
         {/* Shop name */}
         <div className="text-sm font-bold bg-gray-50 px-4 py-2 rounded-lg border border-gray-100" style={{ color: 'var(--text-primary)' }}>
