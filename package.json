@@ -14,8 +14,10 @@
     "@prisma/adapter-libsql": "^7.9.1",
     "@prisma/adapter-mariadb": "^7.9.1",
     "@prisma/client": "^7.9.1",
+    "bcryptjs": "^3.0.3",
     "exceljs": "^4.4.0",
     "idb": "^8.0.3",
+    "jose": "^6.2.10",
     "lucide-react": "^1.33.0",
     "mariadb": "^3.5.3",
     "next": "16.3.2",
@@ -24,6 +26,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/bcryptjs": "^2.4.6",
     "@types/better-sqlite3": "^9.6.0",
     "@types/node": "^20",
     "@types/react": "^19",

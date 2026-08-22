@@ -20,7 +20,9 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
               borderRadius: '12px',
             }}
           />
-          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Memuat data...</p>
+          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
+            Memuat data<span className="animate-pulse inline-block">...</span>
+          </p>
         </div>
       </div>
     );
@@ -32,10 +34,10 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
       <Sidebar />
 
       {/* Main content */}
-      <div className="flex flex-col flex-1 overflow-hidden" style={{ marginLeft: '256px' }}>
+      <div className="flex flex-col flex-1 overflow-hidden ml-0 md:ml-64 pb-[72px] md:pb-0">
         <Header shopName={settings.shopName} />
         <main
-          className="flex-1 overflow-y-auto p-6"
+          className="flex-1 overflow-y-auto p-4 md:p-6"
           key={pathname}
           style={{ animation: 'fadeIn 0.25s ease' }}
         >

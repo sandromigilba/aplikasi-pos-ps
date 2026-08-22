@@ -87,9 +87,47 @@ export default function SettingsPanel() {
         <div className="flex items-start gap-3 mt-6 p-4 rounded-xl bg-red-50 border border-red-100 text-red-600 text-sm max-w-md">
           <AlertTriangle size={18} className="flex-shrink-0 mt-0.5" />
           <p className="font-medium leading-relaxed">
-            <strong>Perhatian:</strong> Proses Restore akan menimpa SEMUA data yang ada di browser saat ini.
+            <strong>Perhatian:</strong> Proses Restore akan menimpa SEMUA data yang ada di database TiDB saat ini (jika ID bentrok).
           </p>
         </div>
+      </div>
+
+      {/* Security */}
+      <div className="glass-card p-6">
+        <div className="mb-6 border-b border-gray-100 pb-4">
+          <h3 className="font-bold text-gray-900">Keamanan (Login)</h3>
+          <p className="text-xs mt-1 text-gray-500 font-medium">Ubah kredensial akses ke sistem POS ini.</p>
+        </div>
+        
+        <form 
+          className="space-y-4 max-w-md"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const fd = new FormData(e.currentTarget);
+            const res = await fetch('/api/settings/auth', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                newUsername: fd.get('username'),
+                newPassword: fd.get('password')
+              })
+            });
+            if (res.ok) alert('Kredensial berhasil diubah!');
+            else alert('Gagal merubah kredensial.');
+          }}
+        >
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Username Baru</label>
+            <input name="username" placeholder="Kosongkan jika tidak ingin diubah" className="input-float w-full" />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Password Baru</label>
+            <input name="password" type="password" placeholder="Kosongkan jika tidak ingin diubah" className="input-float w-full" />
+          </div>
+          <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm font-bold shadow-sm">
+            Simpan Kredensial
+          </button>
+        </form>
       </div>
     </div>
   );

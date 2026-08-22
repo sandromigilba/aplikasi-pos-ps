@@ -46,14 +46,14 @@ export default function CashierPage() {
   const total = cart.reduce((s, i) => s + i.subtotal, 0);
 
   return (
-    <div className="flex gap-6 h-full pb-2">
+    <div className="flex flex-col lg:flex-row gap-6 lg:h-full pb-2">
       {/* Left: Product Catalog */}
       <div className="flex-1 min-w-0">
         <ProductCatalog products={products} onAddToCart={addToCart} />
       </div>
 
       {/* Right: Cart */}
-      <div style={{ width: '380px', flexShrink: 0 }}>
+      <div className="w-full lg:w-[380px] lg:flex-shrink-0">
         <Cart
           items={cart}
           onUpdateQty={updateQty}

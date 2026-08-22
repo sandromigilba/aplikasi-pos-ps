@@ -51,7 +51,7 @@ export default function PaymentModal({ items, total, onClose, onSuccess }: Payme
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ background: 'rgba(0,0,0,0.8)' }}>
       <div
-        className="w-96 rounded-xl animate-fade-in overflow-hidden"
+        className="w-[90vw] max-w-sm rounded-xl animate-fade-in overflow-hidden"
         style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}
       >
         {done ? (

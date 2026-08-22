@@ -55,7 +55,7 @@ export default function ProductList() {
 
       {/* Table */}
       <div
-        className="rounded-xl overflow-hidden"
+        className="rounded-xl overflow-x-auto overflow-y-hidden"
         style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}
       >
         <table className="w-full text-xs">

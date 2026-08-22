@@ -119,6 +119,20 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     async function init() {
       try {
+        // Load from local cache first for instant UI
+        const cachedProducts = localStorage.getItem('pos_cache_products');
+        const cachedTxs = localStorage.getItem('pos_cache_transactions');
+        const cachedSettings = localStorage.getItem('pos_cache_settings');
+        
+        if (cachedProducts) setProducts(JSON.parse(cachedProducts));
+        if (cachedTxs) setTransactions(JSON.parse(cachedTxs));
+        if (cachedSettings) setSettings(JSON.parse(cachedSettings));
+        
+        // If we have cache, we can stop loading immediately
+        if (cachedProducts || cachedSettings) {
+          setIsLoading(false);
+        }
+
         // First try to sync any offline txs before we pull DB state
         await syncOfflineTransactions();
 
@@ -129,12 +143,15 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           if (apiSettings.shopName) loaded.shopName = apiSettings.shopName;
           if (apiSettings.currency) loaded.currency = apiSettings.currency;
           if (apiSettings.taxPercent) loaded.taxPercent = Number(apiSettings.taxPercent);
-          setSettings(prev => ({ ...prev, ...loaded }));
           
-
+          setSettings(prev => {
+            const next = { ...prev, ...loaded };
+            localStorage.setItem('pos_cache_settings', JSON.stringify(next));
+            return next;
+          });
         }
 
-        // Load DB data
+        // Load DB data (background fetch)
         const [dbProducts, dbTxs] = await Promise.all([
           getAllProducts(),
           getAllTransactions()
@@ -142,6 +159,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         
         setProducts(dbProducts);
         setTransactions(dbTxs);
+        
+        // Save to cache
+        localStorage.setItem('pos_cache_products', JSON.stringify(dbProducts));
+        localStorage.setItem('pos_cache_transactions', JSON.stringify(dbTxs));
+        
       } catch (err) {
         console.error('Failed to init store:', err);
       } finally {
@@ -172,26 +194,37 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   // ---- Products ----
   const addProduct = useCallback(async (p: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>) => {
-    // frontend mock structure
     const tempProduct: Product = {
       ...p,
-      id: generateId(), // Will be ignored by backend create, but good for type check
+      id: generateId(),
       createdAt: now(),
       updatedAt: now(),
     };
     const saved = await createProduct(tempProduct);
-    setProducts(prev => [...prev, saved]);
+    setProducts(prev => {
+      const next = [...prev, saved];
+      localStorage.setItem('pos_cache_products', JSON.stringify(next));
+      return next;
+    });
   }, []);
 
   const updateProduct = useCallback(async (p: Product) => {
     const updated = { ...p, updatedAt: now() };
     await updateProductAPI(updated);
-    setProducts(prev => prev.map(old => old.id === p.id ? updated : old));
+    setProducts(prev => {
+      const next = prev.map(old => old.id === p.id ? updated : old);
+      localStorage.setItem('pos_cache_products', JSON.stringify(next));
+      return next;
+    });
   }, []);
 
   const removeProduct = useCallback(async (id: string) => {
     await deleteProduct(id);
-    setProducts(prev => prev.filter(p => p.id !== id));
+    setProducts(prev => {
+      const next = prev.filter(p => p.id !== id);
+      localStorage.setItem('pos_cache_products', JSON.stringify(next));
+      return next;
+    });
   }, []);
 
   // ---- Checkout ----
@@ -221,18 +254,30 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       const product = products.find(p => p.id === item.productId);
       if (product && product.stock !== null) {
         const newStock = Math.max(0, product.stock - item.quantity);
-        setProducts(prev => prev.map(old => old.id === product.id ? { ...product, stock: newStock } : old));
+        setProducts(prev => {
+          const next = prev.map(old => old.id === product.id ? { ...product, stock: newStock } : old);
+          localStorage.setItem('pos_cache_products', JSON.stringify(next));
+          return next;
+        });
       }
     }
 
     try {
       const savedTx = await saveTransaction(tx);
       savedTx.status = 'completed';
-      setTransactions(prev => [...prev, savedTx]);
+      setTransactions(prev => {
+        const next = [...prev, savedTx];
+        localStorage.setItem('pos_cache_transactions', JSON.stringify(next));
+        return next;
+      });
     } catch (err) {
       console.warn("Offline mode active. Saving transaction to queue.");
       tx.status = 'pending_sync';
-      setTransactions(prev => [...prev, tx]);
+      setTransactions(prev => {
+        const next = [...prev, tx];
+        localStorage.setItem('pos_cache_transactions', JSON.stringify(next));
+        return next;
+      });
       
       const q = JSON.parse(localStorage.getItem('pos_offline_tx') || '[]');
       q.push(tx);
@@ -288,9 +333,16 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const cancelTransaction = useCallback(async (id: string, reason: string) => {
     const updated = await cancelTransactionApi(id, reason);
-    setTransactions(prev => prev.map(t => t.id === id ? updated : t));
+    setTransactions(prev => {
+      const next = prev.map(t => t.id === id ? updated : t);
+      localStorage.setItem('pos_cache_transactions', JSON.stringify(next));
+      return next;
+    });
+    
+    // Also refresh products since stock was updated
     const prods = await getAllProducts();
     setProducts(prods);
+    localStorage.setItem('pos_cache_products', JSON.stringify(prods));
   }, []);
 
   const value: StoreContextType = {

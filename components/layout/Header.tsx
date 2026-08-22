@@ -2,7 +2,7 @@
 import { usePathname } from 'next/navigation';
 
 const PAGE_TITLES: Record<string, string> = {
-  '/cashier':    'Point of Sale',
+  '/':           'Point of Sale',
   '/dashboard':  'Dashboard Analytics',
   '/products':   'Manajemen Produk',
   '/history':    'Riwayat Transaksi',
@@ -15,13 +15,13 @@ interface HeaderProps {
 
 export default function Header({ shopName }: HeaderProps) {
   const pathname = usePathname();
-  const title = PAGE_TITLES[pathname] || PAGE_TITLES['/cashier'];
+  const title = PAGE_TITLES[pathname] || PAGE_TITLES['/'];
   const now = new Date();
   const dateStr = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
   return (
     <header
-      className="flex items-center justify-between px-8 py-4"
+      className="flex flex-col md:flex-row md:items-center justify-between px-4 md:px-8 py-4 gap-4 md:gap-0"
       style={{
         background: 'var(--bg-card)',
         borderBottom: '1px solid var(--border)',
